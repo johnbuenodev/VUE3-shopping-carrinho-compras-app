@@ -2,7 +2,7 @@
   <div id="nav">
     <router-link to="/">Início</router-link> -
     <router-link to="/product">Produto</router-link> -
-    <router-link to="/basket">Carrinho (0)</router-link> 
+    <router-link to="/basket">Carrinho ({{ this.bagLength }})</router-link> 
   </div>
   <router-view/>
 </template>
@@ -17,7 +17,18 @@
      //dispach chama a action ("passa o nome da action")
      this.$store.dispatch('getProduct');
     },
-      
+    //NÃO PRECISA CHAMAR O CICLO DE VIDA UPDATE NEM  BEFOREUPDATE
+    // beforeUpdate() {
+    //   this.bagLength();
+    // },
+    computed: {
+
+    //metodo bagLength traz do store quantos produtos tem add no carrinho
+    bagLength() {
+      return this.$store.state.productsInBag ? this.$store.state.productsInBag.length : 0;
+    }
+
+  }  
 
   }
   
