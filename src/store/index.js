@@ -26,9 +26,22 @@ export default createStore({
       //ATENÇÃO SE COMPARAR PELO PRODUTO NUNCA VAI SER IGUAL POIS TEM O QUANTITY COM VALOR NELE
       
       //pegar indice do objeto dentro da ARRAY PARA PASSAR PARA O SPLICE REMOVER
-      const index = state.productsInBag.indexOf(product);
+      
+      //funcionando ok inicio primeira opção
+      //const index = state.productsInBag.indexOf(product);
       //removendo registro com splice
-      state.productsInBag.splice(index, 1);
+      
+      //funcionando ok fim
+      //state.productsInBag.splice(index, 1);
+      //console.log(state.productsInBag);
+
+      /* outra forma de remover e atualizar
+
+
+      */
+      // segunda opção
+      let updatedListBag = state.productsInBag.filter(item => product.id != item.id);
+      state.productsInBag = updatedListBag;
       console.log(state.productsInBag);
 
     }

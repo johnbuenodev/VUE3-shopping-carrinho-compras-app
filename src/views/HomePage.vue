@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <div class="products">
-      {{ this.bagLength }}
-      <div v-for="product in products" class="product" :key="product.id">
+      <!-- {{ this.bagLength }} -->
+      <div v-for="product in products" class="product" :class="(product.quantity) > 0 ? 'inBag' : ''" :key="product.id">
         <div class="product-image" :style="{backgroundImage: 'url(' + product.image + ')'}"></div>
         <h4>{{ product.title }}</h4>
         <p class="price">R$ {{ product.price.toFixed(2) }}</p> <!-- ajustar as casas decimais -->
@@ -49,9 +49,13 @@ export default {
     this.$store.dispatch('addProductInBag', product);
    },
    removeProductInBag(product) {
-    product.quantity = 0;
-    this.$store.dispatch('removeProductInBag', product);
-   }
+
+    if(confirm('Vc deseja remover o item do carrinho?')) { 
+     product.quantity = 0;
+     this.$store.dispatch('removeProductInBag', product);
+    }
+
+   },
 
   },
   //utilizar o computed para pegar os dados atuais do store

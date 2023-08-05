@@ -2,7 +2,7 @@
   <div class="basket">
     <div class="items">
 
-      <div class="item">
+      <!-- <div class="item">
         <div class="remove">Remover Produto</div>
         <div class="photo"><img src="https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg" alt=""></div>
         <div class="description">Mens Casual Premium Slim Fit T-Shirts </div>
@@ -14,8 +14,24 @@
           </span>
           <span class="amount">R$ 22.30</span>
         </div>
+      </div> -->
+
+      <div v-for="product in productsInBag" :key="product.id" class="item">
+        <div class="remove" @click="removeProductInBag(product)">Remover Produto</div>
+        <div class="photo"><img :src="product.image" :alt="product.title"></div>
+        <div class="description">{{ product.description }} </div>
+        <div class="price">
+          <span class="quantity-area">
+            <!-- v-if="product.quantity > 0" -->
+            <button  :disabled="product.quantity < 1" @click="removeQuantityProductInBag(product)">-</button>
+            <span class="quantity">{{ product.quantity }}</span>
+            <button @click="addQuantityProductInBag(product)">+</button>
+          </span>
+          <span class="amount">R$ {{ product.price }}</span>
+        </div>
       </div>
-      <div class="grand-total"> Total do pedido: R$ 22.30</div>
+
+      <div class="grand-total"> Total do pedido: R$ {{ this.totalCar() }}</div>
 
     </div>
   </div>
@@ -23,12 +39,68 @@
 
 <script>
 
+// import { mapState } from 'vuex'
+
 export default {
   name: 'ShoppingBasket',
 
   methods: {
+
+    addQuantityProductInBag(product) {
+      product.quantity = product.quantity + 1;
+      //this.$store.dispatch('addProductInBag', product);
+      //this.totalCar();
+    },
+    removeQuantityProductInBag(product) {
+      product.quantity = product.quantity - 1;
+      //this.$store.dispatch('addProductInBag', product);
+      //this.totalCar();
+    },
+    totalCar() {
+    //.toFixed(2)
+    let totalCarrinho = 0;
+
+    for(let i = 0; i < this.$store.state.productsInBag.length; i++) {
+     
+      let totalProd = this.$store.state.productsInBag[i].price * this.$store.state.productsInBag[i].quantity;
+      totalCarrinho = totalCarrinho + totalProd;  
+      console.log(totalCarrinho);
+    } 
+
+    return (totalCarrinho > 0) ? totalCarrinho.toFixed(2) : 0;
+  },
+  removeProductInBag(product) {
+
+    if(confirm('Vc deseja remover o item do carrinho?')) { 
+      product.quantity = 0;
+      this.$store.dispatch('removeProductInBag', product);
+    }
+
+  },
    
   },
+  computed: { 
+    // this.totalCar() {
+    // //.toFixed(2)
+    // let totalCarrinho = 0;
+
+    // for(let i = 0; i < this.$store.state.productsInBag.length; i++) {
+     
+    //   let totalProd = this.$store.state.productsInBag[i].price * this.$store.state.productsInBag[i].quantity;
+    //   totalCarrinho = totalCarrinho + totalProd;  
+    //   console.log(totalCarrinho);
+    // } 
+
+    // return (totalCarrinho > 0) ? totalCarrinho.toFixed(2) : 0;
+    // },
+
+    productsInBag () {
+      return this.$store.state.productsInBag;
+    },
+  }, 
+
+  
+
  
 }
 </script>
