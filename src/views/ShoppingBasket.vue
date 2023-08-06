@@ -1,6 +1,6 @@
 <template>
   <div class="basket">
-    <div class="items">
+    <div class="items" v-if="this.$store.state.productsInBag.length > 0">
 
       <!-- <div class="item">
         <div class="remove">Remover Produto</div>
@@ -23,7 +23,7 @@
         <div class="price">
           <span class="quantity-area">
             <!-- v-if="product.quantity > 0" -->
-            <button  :disabled="product.quantity < 1" @click="removeQuantityProductInBag(product)">-</button>
+            <button  :disabled="product.quantity <= 1" @click="removeQuantityProductInBag(product)">-</button>
             <span class="quantity">{{ product.quantity }}</span>
             <button @click="addQuantityProductInBag(product)">+</button>
           </span>
@@ -34,6 +34,11 @@
       <div class="grand-total"> Total do pedido: R$ {{ this.totalCar() }}</div>
 
     </div>
+
+    <!--- v-if="this.$store.state.productsInBag.length <= 0" -->
+    <div class="items" v-else>
+     <span>Você ainda não possui produtos no carrinho</span>
+    </div>
   </div>
 </template>
 
@@ -43,7 +48,11 @@
 
 export default {
   name: 'ShoppingBasket',
-
+  data() {
+    return {
+      
+    }
+  },
   methods: {
 
     addQuantityProductInBag(product) {
@@ -79,6 +88,8 @@ export default {
   },
    
   },
+  created() {}, 
+  beforeUpdate() {},
   computed: { 
     // this.totalCar() {
     // //.toFixed(2)
@@ -93,10 +104,13 @@ export default {
 
     // return (totalCarrinho > 0) ? totalCarrinho.toFixed(2) : 0;
     // },
-
+    
     productsInBag () {
+
       return this.$store.state.productsInBag;
-    },
+
+    }
+
   }, 
 
   
