@@ -19,6 +19,7 @@
      console.log("Created");
      //dispach chama a action ("passa o nome da action")
      this.$store.dispatch('getProduct');
+     this.$store.dispatch('getProductInBagStorage');
     },
     //NÃO PRECISA CHAMAR O CICLO DE VIDA UPDATE NEM  BEFOREUPDATE
     // beforeUpdate() {

@@ -15,11 +15,30 @@ export default createStore({
       //this.state.products = products;
       console.log(state.products);
     },
-    addProductInBag(state, product) {
+
+    //VERIFICAR O BUG
+    async addProductInBag(state, product) {
       console.log("Mutation add product in bag");
       console.log(product);
+      
+      let productsInBagLocalStorage = state.productsInBag;
+
+      for(let i = 0; i < productsInBagLocalStorage.length; i++) {
+        if(productsInBagLocalStorage[i].id == product.id) {
+          alert("Produto já adicionado no carrinho");
+          return;
+        } else {
+          console.log("Nao tem");
+        }
+      }
+
       state.productsInBag.push(product);
+
+      let productsInBagString = JSON.stringify(state.productsInBag);
+      localStorage.setItem("@productsAppShopping", productsInBagString);
+      
       console.log(state.productsInBag);
+        
     },
     removeProductInBag(state, product) {
       //state.productsInBag.filter(value => product != value);
@@ -42,9 +61,21 @@ export default createStore({
       // segunda opção
       let updatedListBag = state.productsInBag.filter(item => product.id != item.id);
       state.productsInBag = updatedListBag;
+
+      let productsInBagString = JSON.stringify(state.productsInBag);
+      localStorage.setItem("@productsAppShopping", productsInBagString);
       console.log(state.productsInBag);
 
-    }
+    },
+    getProductInBagStorage(state) {
+      
+      let productsInBagProcess = localStorage.getItem("@productsAppShopping");
+      
+      let productsInBagJSON = JSON.parse(productsInBagProcess);
+      
+      state.productsInBag = (productsInBagJSON.length > 0) ? productsInBagJSON : [];
+      console.log(state.productsInBag);
+    },
   },
   actions: {
 
@@ -64,7 +95,11 @@ export default createStore({
     },
     removeProductInBag({commit}, product) {
       commit('removeProductInBag', product);
-    }
+    },
+    getProductInBagStorage({commit}) {
+    
+       commit('getProductInBagStorage');
+    }, 
 
   },
   modules: {

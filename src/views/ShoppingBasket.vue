@@ -50,7 +50,7 @@ export default {
   name: 'ShoppingBasket',
   data() {
     return {
-      
+
     }
   },
   methods: {
@@ -106,7 +106,7 @@ export default {
     // },
     
     productsInBag () {
-
+      
       return this.$store.state.productsInBag;
 
     }
